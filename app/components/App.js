@@ -1,30 +1,51 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types'
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { handleInitialData } from '../actions/shared';
 require('../../stylesheets/components/App.scss');
 
-import { handleButtonPress } from '../actions/buttonPress'; 
+import LoadingBar from 'react-redux-loading';
 
-export class App extends React.Component {
-  handleClick = (e) => {
-    e.preventDefault();
-    this.props.dispatch(handleButtonPress(1)); 
+import NavBar from './Navbar';
+import Home from './Home';
+import CreateTweet from './CreateTweet';
+import TweetDetail from './Home';
+
+class App extends React.Component {
+  componentDidMount (e) {
+    this.props.dispatch(handleInitialData);
   }
   render() {
-    const { count } = this.props;
     return (
-      <div>
-        <div className="app">
-          You have pushed me {count || 0} times!
-        </div>
-        <button onClick={this.handleClick}>Push Me!</button>
-      </div>
+      <Router>
+        <Fragment>
+          <LoadingBar />
+          <div className='container'>
+            <NavBar />
+            {this.props.loading === true
+              ? null
+              : <div>
+                <Route path='/' exact component={Home} />
+                <Route path='/new' component={CreateTweet} />
+                <Route path='/tweet/:tweetId' component={TweetDetail} />
+              </div>
+            }
+          </div>
+        </Fragment>
+      </Router>
     );
   }
 }
 
-function mapStateToProps ({ buttonPresses }) {
+App.propTypes = {
+  loading: true,
+  dispatch: PropTypes.func.isRequired
+};
+
+function mapStateToProps ({ authedUser }) {
   return {
-    count: buttonPresses.count
+    loading: authedUser === null
   };
 }
 

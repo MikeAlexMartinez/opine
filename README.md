@@ -75,6 +75,10 @@ When responding to another tweet it will be in response to that specfic tweet.
 This is a plugin that is present on every page and is performed to provide feedback
 as to loading progress.
 
+#### Toast
+
+Allows for user messages to be provided to the user.
+
 ### Functionality
 
 Need to be able to a create a new tweet.
@@ -119,3 +123,12 @@ This action will create a new tweet (when submit button is pressed on submit twe
 #### LIKE_TWEET
 
 This action will add the logged in user to the likes array of the liked tweet.
+
+#### DELETE_TWEET
+
+This functionality isn't present in the app. But it will come in handy should I choose to optimistically update the DOM and I need to subsequently remove a tweet. Also, a user ought to be able to delete their
+tweets after the fact.
+
+#### SHOW_ERROR
+
+This triggers error messaging to provide feedback to the user.
