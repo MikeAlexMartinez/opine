@@ -91,12 +91,24 @@ or who it is liking / replying to tweets.
 #### Tweets
 
 Required fields:
+- id
+- content (not longer than 160)
 - userId
 - date
 - likes (array)
 - replies (array)
-- content (not longer than 160)
 - parentTweet (if reply, else null)
+
+#### Users
+
+Although I won't be building functionality to alter user information within this application
+it will be useful to gather user information rather than storing on tweets directly. (normalization)
+
+Required fields:
+- userId
+- displayName
+- avatarURL
+- tweets
 
 ## Actions
 
