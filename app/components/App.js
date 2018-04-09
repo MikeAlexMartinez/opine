@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { handleInitialData } from '../actions/shared';
@@ -12,8 +12,8 @@ import Home from './Home';
 import CreateTweet from './CreateTweet';
 import TweetDetail from './Home';
 
-class App extends React.Component {
-  componentDidMount (e) {
+class App extends Component {
+  componentDidMount () {
     this.props.dispatch(handleInitialData);
   }
   render() {
