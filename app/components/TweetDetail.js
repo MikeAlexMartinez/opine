@@ -11,6 +11,7 @@ class TweetDetail extends Component {
     const { dispatch, id, authedUser } = this.props;
     dispatch(handleLikeTweet(id, authedUser));
   }
+
   render () {
     const { users, userId } = this.props;
     const user = users.filter((u) => u.id === userId );
@@ -26,7 +27,7 @@ class TweetDetail extends Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
