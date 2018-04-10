@@ -7,7 +7,7 @@ require('../../stylesheets/components/App.scss');
 
 import LoadingBar from 'react-redux-loading';
 
-import NavBar from './Navbar';
+import NavBar from './NavBar';
 import Home from './Home';
 import CreateTweet from './CreateTweet';
 import TweetDetail from './Home';

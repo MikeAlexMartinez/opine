@@ -56,4 +56,4 @@ function mapStateToProps({ authedUser }) {
   };
 }
 
-export default connect(mapStateToProps)(createTweet); 
+export default connect(mapStateToProps)(CreateTweet); 
