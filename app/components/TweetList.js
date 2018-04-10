@@ -12,7 +12,7 @@ const TweetList = ({ tweets }) =>
         ? tweets.map((tweet) =>
           <li key={tweet.id} >
             <NavLink to={`/tweet/${tweet.id}`}>
-              <Tweet {...tweet} />
+              <Tweet tweetid={tweet.id} />
             </NavLink>
           </li>
         )
