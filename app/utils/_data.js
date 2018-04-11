@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 exports.users = {
   sarah_edo: {
     id: 'sarah_edo',
@@ -201,3 +203,99 @@ exports.tweets = {
     replies: [],
   },
 };
+
+function generateUID () {
+  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+}
+
+export function _getUsers () {
+  return new Promise((res, rej) => {
+    setTimeout(() => res({...users}), 1000);
+  });
+}
+
+export function _getTweets () {
+  return new Promise((res, rej) => {
+    setTimeout(() => res({...tweets}), 1000);
+  });
+}
+
+export function _saveTweet (tweet) {
+  return new Promise((res, rej) => {
+    setTimeout(() => {
+
+      const newTweet = {
+        ...tweet,
+        id: generateUID(),
+        timestamp: moment().valueOf()
+      };
+      
+      const user = users[tweet.author];
+      
+      const parentTweet = newTweet.replyingTo
+      ? tweets[newTweet.replyingTo]
+      : null;
+      
+      // add new tweet to tweets
+      tweets = {
+        ...tweets,
+        [newTweet.id]: {
+          ...newTweet
+        }
+      };
+      
+      // if replyingTo present add id to replies array of original 
+      // tweet 
+      if (parentTweet) {
+        tweets = {
+          ...tweets,
+          [parentTweet.id]: {
+            ...parentTweet,
+            replies: parentTweet.replies.concat([newTweet.id])
+          }
+        }
+      }
+      
+      // Add tweet to tweets array of user
+      users = {
+        ...users,
+        [tweet.author]: {
+          ...user,
+          tweets: user.tweets.concat([newTweet.id])
+        }
+      };
+      
+      res();
+    }, 1000);
+  });
+};
+
+export function _deleteTweet(tweetId) {
+  return new Promise((res, rej) => {
+    setTimeout(() => {
+      tweets = Object.keys(tweets).reduce((result, key) => {
+        if (key !== tweetId) {
+          result[key] = tweets[key];
+        }
+      }, {});
+
+      res();
+    }, 1000);
+  });
+}
+
+export function _saveLike (tweetId, author) {
+  return new Promise((res, rej) => {
+    setTimeout(() => {
+      tweets = {
+        ...tweets,
+        [tweetId]: {
+          ...tweets[tweetId],
+          likes: tweets[tweetId].likes.concat([author]),
+        }
+      };
+
+      res();
+    }, 1000)
+  });
+}

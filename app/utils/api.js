@@ -1,49 +1,13 @@
-const { tweets, users } = require('./_data');
+const { 
+  _getTweets,
+  _getUsers,
+  _saveTweet,
+  _saveLike,
+  _deleteTweet
+} = require('./_data');
 
-exports.likeTweet = function ({tweetId, userId}) {
-  
-}
+export function getInitialData () {
 
-exports.saveTweet = function (tweet) {
-
-}
-
-exports.loadTweets = function () {
-  return Promise((res, rej) => {
-    const didFail = shouldThisRun();
-    const delay = wait();
-
-    setTimeout(() => {
-      didFail
-        ? rej(new Error('Error loading Tweets'))
-        : res(tweets);
-    }, delay);
-  });
-};
-
-exports.loadUsers = function () {
-  return Promise((res, rej) => {
-    const didFail = shouldThisRun();
-    const delay = wait();
-
-    setTimeout(() => {
-      didFail
-        ? rej(new Error('Error loading Users'))
-        : res(users);
-    }, delay);
-  });
-};
-
-exports.authenticateUser = function (user) {
-
-};
-
-/**
- * random function to simulate delay time
- * @return {number} - value in milliseconds
- */
-function wait() {
-  return Math.floor(Math.random() * (1000 - 100)) + 100;
 }
 
 /**
