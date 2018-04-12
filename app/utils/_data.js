@@ -233,8 +233,8 @@ export function _saveTweet (tweet) {
       const user = users[tweet.author];
       
       const parentTweet = newTweet.replyingTo
-      ? tweets[newTweet.replyingTo]
-      : null;
+        ? tweets[newTweet.replyingTo]
+        : null;
       
       // add new tweet to tweets
       tweets = {
@@ -265,7 +265,7 @@ export function _saveTweet (tweet) {
         }
       };
       
-      res({tweets, users});
+      res(tweet);
     }, 1000);
   });
 };

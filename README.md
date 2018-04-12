@@ -96,12 +96,12 @@ or who it is liking / replying to tweets.
 
 Required fields:
 - id
-- content (not longer than 160)
-- userId
-- date
-- likes (array)
+- author
+- text (not longer than 160)
+- timestamp
+- likes (array - the id of those people that like the tweet)
+- replyingTo (if reply this is the parent Tweets id, else null)
 - replies (array)
-- parentTweet (if reply, else null)
 
 #### Users
 
@@ -118,7 +118,12 @@ Required fields:
 
 #### CREATE_TWEET
 
-This action will create a new tweet (when submit button is pressed on submit tweet form)
+This action will create a new tweet (when submit button is pressed on submit tweet form).
+
+State changes: 
+  - Add new tweet to state
+  - Add tweet id to parent replies array if replyingTo exists.
+  - Add tweet id to authors tweets array.
 
 #### LIKE_TWEET
 

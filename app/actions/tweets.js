@@ -32,10 +32,11 @@ function likeTweet(tweetId, authedUser) {
   };
 }
 
-function removeTweet(tweet) {
+function removeTweet(tweet, authedUser) {
   return {
     type: DELETE_TWEET,
-    id: tweet.id
+    id: tweet.id,
+    author: authedUser,
   };
 }
 

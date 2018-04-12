@@ -8,9 +8,17 @@ import {
 export default function tweets (state = {}, action) {
   switch(action.type) {
     case CREATE_TWEET:
+      const {tweet} = action;
+      const parent = tweet.replyingTo
+        ? state[tweet.replyingTo]
+        : null;
       return {
         ...state,
-        [action.tweet.id]: action.tweet
+        [parent.id]: {
+          ...parent,
+          replies: parent.replies.concat([tweet.id]),
+        },
+        [tweet.id]: tweet
       };
     case DELETE_TWEET:
       return Object.keys(state).reduce((result, key) => {
@@ -21,14 +29,17 @@ export default function tweets (state = {}, action) {
       }, {});
     case RECEIVE_TWEETS:
       return {
-        ...state,
         ...action.tweets
-      }
+      };
     case LIKE_TWEET:
+      const {tweetId, authedUser} = action;
+      const tweet = state[tweetId];
       return {
         ...state,
-        []
-      }
+        [tweetId]: {
+          likes: tweet.likes.concat([authedUser]),
+        }
+      };
     default:
       return state;
   }
