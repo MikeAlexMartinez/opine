@@ -265,7 +265,7 @@ export function _saveTweet (tweet) {
         }
       };
       
-      res();
+      res({tweets, users});
     }, 1000);
   });
 };
@@ -279,7 +279,7 @@ export function _deleteTweet(tweetId) {
         }
       }, {});
 
-      res();
+      res({tweetId});
     }, 1000);
   });
 }
@@ -295,7 +295,7 @@ export function _saveLike (tweetId, author) {
         }
       };
 
-      res();
+      res(tweetId, author);
     }, 1000)
   });
 }

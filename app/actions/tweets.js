@@ -1,6 +1,7 @@
-import { saveTweet, deleteTweet } from '../utils/api';
+import { saveTweet, deleteTweet, likeTweet } from '../utils/api';
 import { showError } from './shared';
 import { showLoading, hideLoading } from 'react-redux-loading';
+import { _saveLike } from '../utils/_data';
 
 // constants
 export const RECEIVE_TWEETS = 'RECEIVE_TWEETS';
@@ -23,11 +24,27 @@ function createTweet(tweet) {
   };
 }
 
-export function removeTweet(tweet) {
+function likeTweet(tweetId, authedUser) {
+  return {
+    type: LIKE_TWEET,
+    tweetId,
+    authedUser
+  };
+}
+
+function removeTweet(tweet) {
   return {
     type: DELETE_TWEET,
     id: tweet.id
   };
+}
+
+export function handleLikeTweet(tweetId, userId) {
+  return (dispatch) => {
+    dispatch(showLoading());
+    return _saveLike(tweetId, userId)
+      .then(() => dispatch())
+  }
 }
 
 export function handleCreateTweet(tweet) {
