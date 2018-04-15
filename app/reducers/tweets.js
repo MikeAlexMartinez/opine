@@ -7,19 +7,24 @@ import {
 
 export default function tweets (state = {}, action) {
   switch(action.type) {
+    case RECEIVE_TWEETS:
+      return {
+        ...action.tweets
+      };
     case CREATE_TWEET:
       const {tweet} = action;
-      const parent = tweet.replyingTo
-        ? state[tweet.replyingTo]
-        : null;
-      return {
+      const returnState = {
         ...state,
-        [parent.id]: {
-          ...parent,
-          replies: parent.replies.concat([tweet.id]),
-        },
         [tweet.id]: tweet
       };
+      if (tweet.replyingTo) {
+        const parent = state[tweet.replyingTo];
+        returnState[parent.id] = {
+          ...parent,
+          replies: parent.replies.concat([tweet.id])
+        };
+      }
+      return returnState;
     case DELETE_TWEET:
       return Object.keys(state).reduce((result, key) => {
         if (key !== action.id) {
@@ -27,17 +32,21 @@ export default function tweets (state = {}, action) {
         }
         return result;
       }, {});
-    case RECEIVE_TWEETS:
-      return {
-        ...action.tweets
-      };
     case LIKE_TWEET:
-      const {tweetId, authedUser} = action;
-      const tweet = state[tweetId];
+      const {tweetId, authedUser, status} = action.liked;
+      console.log(tweetId, authedUser, status);
+      let likedTweet = state[tweetId];
+      console.log(likedTweet);
+      if (status) {
+        likedTweet.likes = likedTweet.likes.concat([authedUser]);
+      } else {
+        likedTweet.likes = likedTweet.likes.filter((auth) => auth !== authedUser);
+      }
+      console.log(likedTweet);
       return {
         ...state,
         [tweetId]: {
-          likes: tweet.likes.concat([authedUser]),
+          ...likedTweet
         }
       };
     default:

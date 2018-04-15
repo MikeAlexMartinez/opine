@@ -17,6 +17,7 @@ module.exports = {
       },
       "sourceType": "module"
   },
+  "parser": "babel-eslint",
   "plugins": [
       "react",
       "jest"
@@ -41,6 +42,7 @@ module.exports = {
           "error",
           "always"
       ],
+      "no-case-declarations": 0,
       "no-console": 0,
       "no-process-env": 0,
   },

@@ -10,11 +10,11 @@ import LoadingBar from 'react-redux-loading';
 import NavBar from './NavBar';
 import Home from './Home';
 import CreateTweet from './CreateTweet';
-import TweetDetail from './Home';
+import TweetDetail from './TweetDetail';
 
 class App extends Component {
   componentDidMount () {
-    this.props.dispatch(handleInitialData);
+    this.props.dispatch(handleInitialData());
   }
   render() {
     return (
@@ -24,7 +24,7 @@ class App extends Component {
           <div className='container'>
             <NavBar />
             {this.props.loading === true
-              ? null
+              ? <p>Loading...</p>
               : <div>
                 <Route path='/' exact component={Home} />
                 <Route path='/new' component={CreateTweet} />
@@ -39,7 +39,7 @@ class App extends Component {
 }
 
 App.propTypes = {
-  loading: true,
+  loading: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired
 };
 

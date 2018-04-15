@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+require('../../stylesheets/components/TweetList.scss');
 
 import Tweet from './Tweet';
 
@@ -25,10 +25,4 @@ TweetList.propTypes = {
   tweets: PropTypes.array,
 };
 
-function mapStateToProps ({ tweets }) {
-  return {
-    tweets
-  };
-}
-
-export default connect(mapStateToProps)(TweetList);
+export default TweetList;

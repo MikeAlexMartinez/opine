@@ -1,0 +1,24 @@
+.new-tweet-form {
+  textarea,
+  button {
+    display: block;
+    margin: 10px auto;
+    color: #7e7e7e;
+  }
+  textarea {
+    width: 590px;
+    min-height: 125px;
+    padding: 10px 20px;
+    font-family: monospace;
+    font-size: 1.2em;
+    letter-spacing: 0.025em;
+  }
+  button {
+    cursor: pointer;
+    margin-top: 20px;
+    background: #fff;
+    padding: 5px 60px;
+    font-size: 20px;
+    border: 1px solid #cbcbcb;
+  }
+}

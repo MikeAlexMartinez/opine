@@ -1,6 +1,6 @@
 const moment = require('moment');
 
-exports.users = {
+let users = {
   sarah_edo: {
     id: 'sarah_edo',
     name: 'Sarah Drasner',
@@ -21,7 +21,7 @@ exports.users = {
   }
 };
 
-exports.tweets = {
+let tweets = {
   '8xf0y6ziyjabvozdd253nd': {
     id: '8xf0y6ziyjabvozdd253nd',
     text: 'Shoutout to all the speakers I know for whom English is not a first language, but can STILL explain a concept well. It\'s hard enough to give a good talk in your mother tongue!',
@@ -209,25 +209,26 @@ function generateUID () {
 }
 
 export function _getUsers () {
-  return new Promise((res, rej) => {
-    setTimeout(() => res({...users}), 1000);
+  return new Promise((res) => {
+    setTimeout(() => res(users), 1000);
   });
 }
 
 export function _getTweets () {
-  return new Promise((res, rej) => {
-    setTimeout(() => res({...tweets}), 1000);
+  return new Promise((res) => {
+    setTimeout(() => res(tweets), 1000);
   });
 }
 
 export function _saveTweet (tweet) {
-  return new Promise((res, rej) => {
+  return new Promise((res) => {
     setTimeout(() => {
-
       const newTweet = {
         ...tweet,
         id: generateUID(),
-        timestamp: moment().valueOf()
+        timestamp: moment().valueOf(),
+        likes: [],
+        replies: [],
       };
       
       const user = users[tweet.author];
@@ -253,7 +254,7 @@ export function _saveTweet (tweet) {
             ...parentTweet,
             replies: parentTweet.replies.concat([newTweet.id])
           }
-        }
+        };
       }
       
       // Add tweet to tweets array of user
@@ -265,13 +266,13 @@ export function _saveTweet (tweet) {
         }
       };
       
-      res(tweet);
+      res(newTweet);
     }, 1000);
   });
-};
+}
 
 export function _deleteTweet(tweetId) {
-  return new Promise((res, rej) => {
+  return new Promise((res) => {
     setTimeout(() => {
       tweets = Object.keys(tweets).reduce((result, key) => {
         if (key !== tweetId) {
@@ -284,18 +285,35 @@ export function _deleteTweet(tweetId) {
   });
 }
 
-export function _saveLike (tweetId, author) {
-  return new Promise((res, rej) => {
+export function _saveLike (tweetId, author, status) {
+  return new Promise((res) => {
     setTimeout(() => {
-      tweets = {
-        ...tweets,
-        [tweetId]: {
-          ...tweets[tweetId],
-          likes: tweets[tweetId].likes.concat([author]),
-        }
-      };
+      
+      console.log(tweetId, author, status);
+      const tweet = tweets[tweetId];
 
-      res(tweetId, author);
-    }, 1000)
+      // if status is false,
+      // remove author from tweets likes array
+      if (!status) {
+        tweets = {
+          ...tweets,
+          [tweetId]: {
+            ...tweet,
+            likes: tweet.likes.filter((auth) => auth === author)
+          }
+        };
+      } else {
+        // else add to array
+        tweets = {
+          ...tweets,
+          [tweetId]: {
+            ...tweet,
+            likes: tweet.likes.concat([author]),
+          }
+        };
+      }
+
+      res({tweetId, userId: author, status});
+    }, 1000);
   });
 }

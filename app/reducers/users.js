@@ -20,13 +20,13 @@ export default function users(state = {}, action) {
         },
       };
     case DELETE_TWEET:
-      const {id, author} = action;
-      const user = state[author];
+      const tweetId = action.id; 
+      const activeUser = state[action.author];
       return {
         ...state,
         [author]: {
-          ...user,
-          tweets: user.tweets.filter((v) => id === v),
+          ...activeUser,
+          tweets: activeUser.tweets.filter((v) => tweetId === v),
         },
       };
     default:

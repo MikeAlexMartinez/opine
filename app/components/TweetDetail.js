@@ -1,20 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import { connect } from 'react-redux';
 
-import { handleLikeTweet } from '../actions/tweets';
+import TweetList from './TweetList';
 
 class TweetDetail extends Component {
-  handleClick = (e) => {
-    e.preventDefault();
-    const { dispatch, id, authedUser } = this.props;
-    dispatch(handleLikeTweet(id, authedUser));
-  }
 
   render () {
     const { users, userId } = this.props;
-    const user = users.filter((u) => u.id === userId );
+    const user = users[userId];
     return (
       <div className='tweet'>
         <div className='left'>
@@ -32,21 +26,21 @@ class TweetDetail extends Component {
 }
 
 TweetDetail.propTypes = {
+  dispatch: PropTypes.func,
   id: PropTypes.string,
-  content: PropTypes.string,
-  userId: PropTypes.string,
-  date: PropTypes.number,
-  likes: PropTypes.array,
-  replies: PropTypes.array,
-  parentTweet: PropTypes.string,
   authedUser: PropTypes.string,
-  Users: PropTypes.array,
+  userId: PropTypes.string,
+  users: PropTypes.object
 };
 
-function mapStateToProps({ authedUser, users }) {
+function mapStateToProps({ authedUser, users, tweets }, {match}) {
+  const {tweetId} = match.params;
+  const author = tweets[tweetId].author;
+
   return {
+    userId: author,
     authedUser,
-    users
+    users,
   };
 } 
 

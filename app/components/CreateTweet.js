@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+require('../../stylesheets/components/CreateTweet.scss');
 
 import { handleCreateTweet } from '../actions/tweets';
 
@@ -13,14 +15,20 @@ class CreateTweet extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const { content } = this.state;
-    const { authedUser } = this.props;
+    const { authedUser, replyingTo } = this.props;
+
+    const tweet = {
+      text: content,
+      author: authedUser,
+      replyingTo: replyingTo || null,
+    };
 
     this.props.history.push('/');
-    this.props.dispatch(handleCreateTweet(content, authedUser));
+    this.props.dispatch(handleCreateTweet(tweet, authedUser));
   }
 
   handleInputChange = (e) => {
-    const { value, name} = e.target();
+    const {value, name} = e.target;
     this.setState(() => ({
       [name]: value
     }));
@@ -31,15 +39,15 @@ class CreateTweet extends Component {
     return (
       <div>
         <Heading title='Compose new Tweet' />
-        <form submit={this.handleSubmit}>
-          <input
+        <form onSubmit={this.handleSubmit} className="new-tweet-form">
+          <textarea
             value={content}
             onChange={this.handleInputChange}
             name='content'
             className='input'
             id='content'
+            placeholder="What's happening?"
             maxLength='160'
-            type='textarea'
           />
           <button className='btn' type='submit'>
             Submit
@@ -49,6 +57,13 @@ class CreateTweet extends Component {
     );
   }
 }
+
+CreateTweet.propTypes = {
+  dispatch: PropTypes.func,
+  history: PropTypes.object,
+  authedUser: PropTypes.string,
+  replyingTo: PropTypes.string,
+};
 
 function mapStateToProps({ authedUser }) {
   return {

@@ -1,7 +1,6 @@
-import { saveTweet, deleteTweet, likeTweet } from '../utils/api';
+import { saveTweet, deleteTweet, saveLikeTweet } from '../utils/api';
 import { showError } from './shared';
 import { showLoading, hideLoading } from 'react-redux-loading';
-import { _saveLike } from '../utils/_data';
 
 // constants
 export const RECEIVE_TWEETS = 'RECEIVE_TWEETS';
@@ -24,11 +23,14 @@ function createTweet(tweet) {
   };
 }
 
-function likeTweet(tweetId, authedUser) {
+function likeTweet(tweetId, authedUser, status) {
   return {
     type: LIKE_TWEET,
-    tweetId,
-    authedUser
+    liked: {
+      tweetId,
+      authedUser,
+      status,
+    }
   };
 }
 
@@ -40,21 +42,35 @@ function removeTweet(tweet, authedUser) {
   };
 }
 
-export function handleLikeTweet(tweetId, userId) {
+export function handleLikeTweet(tweetId, userId, status) {
   return (dispatch) => {
     dispatch(showLoading());
-    return _saveLike(tweetId, userId)
-      .then(() => dispatch())
-  }
+    return saveLikeTweet(tweetId, userId, status)
+      .then(({tweetId, userId, status}) => {
+        console.log(tweetId, userId, status);
+        return dispatch(likeTweet(tweetId, userId, status));
+      })
+      .then(() => dispatch(hideLoading()))
+      .catch((err) => {
+        console.error(err);
+        return dispatch(showError(err));
+      });
+  };
 }
 
 export function handleCreateTweet(tweet) {
   return (dispatch) => {
     dispatch(showLoading());
     return saveTweet(tweet)
-      .then(() => dispatch(createTweet(tweet)))
+      .then((newTweet) => {
+        console.log(newTweet);
+        return dispatch(createTweet(newTweet));
+      })
       .then(() => dispatch(hideLoading()))
-      .catch((err) => dispatch(showError(err)));
+      .catch((err) => {
+        console.error(err);
+        return dispatch(showError(err));
+      });
   };
 }
 

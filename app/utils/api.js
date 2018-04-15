@@ -7,38 +7,30 @@ const {
 } = require('./_data');
 
 export function getInitialData () {
-  return shouldThisRun()
-    ? Promise.all([
-        _getTweets(),
-        _getUsers()
-      ]).then(([tweet, users]) => ({
-        users,
-        tweets
-      }))
-    : new Error('Issue loading data');
+  return Promise.all([
+    _getTweets(),
+    _getUsers()
+  ]).then(([tweets, users]) => ({
+    users,
+    tweets
+  }));
 }
 
 export function saveTweet (tweet) {
-  return shouldThisRun()
-    ? _saveTweet(tweet)
-    : new Error('Error saving tweet');
+  return _saveTweet(tweet);
 }
 
 export function deleteTweet(tweetId) {
-  return shouldThisRun() 
-    ? _deleteTweet(tweetId)
-    : new Error('Error deleting tweet');
+  return _deleteTweet(tweetId);
 }
 
-export function likeTweet(tweetId, author) {
-  return shouldThisRun() 
-    ? _saveLike(tweetId, author)
-    : new Error('Error saving like');
+export function saveLikeTweet(tweetId, author, status) {
+  return _saveLike(tweetId, author, status);
 }
 
 /**
  * @return {boolean}
- */
+ *
 function shouldThisRun() {
   return Math.floor(Math.random() * 100) < 10; 
-}
+}*/
